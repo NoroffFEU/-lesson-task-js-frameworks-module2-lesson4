@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -5,6 +6,7 @@ import Select from "react-select";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
 import ValidationError from "./components/forms/ValidationError";
 import { MINIMUM_NAME_CHARACTERS, PASSPORT_REGEX, SKILLS } from "./constants/registration";
 import "./App.css";
@@ -17,12 +19,17 @@ const schema = yup.object().shape({
 });
 
 function App() {
-	const { register, handleSubmit, errors, control } = useForm({
+	const [submitted, setSubmitted] = useState(false);
+
+	const { register, handleSubmit, errors, control, reset } = useForm({
 		resolver: yupResolver(schema),
 	});
 
 	function onSubmit(data) {
-		console.log(data);
+		console.log("aa", data);
+		// you would normally do a POST or PUT request here
+		setSubmitted(true);
+		reset();
 	}
 
 	console.log(errors);
@@ -30,6 +37,8 @@ function App() {
 	return (
 		<Container>
 			<h1>Registration</h1>
+			{/* if submitted is true display the Alert */}
+			{submitted && <Alert variant="success">Your registration was successful</Alert>}
 			<Form onSubmit={handleSubmit(onSubmit)}>
 				<Form.Group>
 					<Form.Control name="name" placeholder="Name" ref={register} />
@@ -43,7 +52,7 @@ function App() {
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Control name="password" type="text" placeholder="Password" ref={register} />
+					<Form.Control name="password" type="password" placeholder="Password" ref={register} />
 					<Form.Text className="text-muted">At least 8 characters, with 1 number and 1 special character</Form.Text>
 					{errors.password && <ValidationError>{errors.password.message}</ValidationError>}
 				</Form.Group>
