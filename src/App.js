@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import ValidationError from "./components/forms/ValidationError";
-import { MINIMUM_NAME_CHARACTERS, PASSPORT_REGEX, SKILLS } from "./constants/registration";
+import { MINIMUM_NAME_CHARACTERS, PASSPORT_REGEX, SKILLS, DEFAULT_VALUES } from "./constants/registration";
 import "./App.css";
 
 const schema = yup.object().shape({
@@ -26,10 +26,13 @@ function App() {
 	});
 
 	function onSubmit(data) {
-		console.log("aa", data);
+		console.log(data);
 		// you would normally do a POST or PUT request here
+		// set submitted to true so that the Alert displays
 		setSubmitted(true);
-		reset();
+		// we need to provide a default values object to clear the React Select value
+		// https://react-hook-form.com/api/#reset
+		reset(DEFAULT_VALUES);
 	}
 
 	console.log(errors);

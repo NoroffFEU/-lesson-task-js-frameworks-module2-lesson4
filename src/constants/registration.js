@@ -13,3 +13,6 @@ export const SKILLS = [
 	{ value: "Wordpress", label: "Wordpress" },
 	{ value: "MySQL", label: "MySQL" },
 ];
+export const DEFAULT_VALUES = {
+	skills: "",
+};
