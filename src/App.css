@@ -1,9 +1,9 @@
 .App {
-	text-align: center;
+    text-align: center;
 }
 
 .form-error {
-	background: #fbb;
-	color: darkred;
-	padding: 0.5rem 1rem;
+    background: #fbb;
+    color: darkred;
+    padding: 0.5rem 1rem;
 }
