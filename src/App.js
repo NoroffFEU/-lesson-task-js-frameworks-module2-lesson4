@@ -21,7 +21,7 @@ const schema = yup.object().shape({
 function App() {
 	const [submitted, setSubmitted] = useState(false);
 
-	const { register, handleSubmit, errors, control, reset } = useForm({
+	const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
 		resolver: yupResolver(schema),
 	});
 
@@ -44,29 +44,33 @@ function App() {
 			{submitted && <Alert variant="success">Your registration was successful</Alert>}
 			<Form onSubmit={handleSubmit(onSubmit)}>
 				<Form.Group>
-					<Form.Control name="name" placeholder="Name" ref={register} />
+					<Form.Control placeholder="Name" {...register("name")} />
 					<Form.Text className="text-muted">At least {MINIMUM_NAME_CHARACTERS} characters</Form.Text>
 					{errors.name && <ValidationError>{errors.name.message}</ValidationError>}
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Control name="email" placeholder="Email" ref={register} />
+					<Form.Control placeholder="Email" {...register("email")} />
 					{errors.email && <ValidationError>{errors.email.message}</ValidationError>}
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Control name="password" type="password" placeholder="Password" ref={register} />
+					<Form.Control type="password" placeholder="Password" {...register("password")} />
 					<Form.Text className="text-muted">At least 8 characters, with 1 number and 1 special character</Form.Text>
 					{errors.password && <ValidationError>{errors.password.message}</ValidationError>}
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Control name="confirmPassword" type="password" placeholder="Confirm password" ref={register} />
+					<Form.Control type="password" placeholder="Confirm password" {...register("confirmPassword")} />
 					{errors.confirmPassword && <ValidationError>{errors.confirmPassword.message}</ValidationError>}
 				</Form.Group>
 
 				<Form.Group>
-					<Controller as={Select} name="skills" options={SKILLS} isMulti control={control} />
+					<Controller
+                        name="skills"
+                        control={control}
+                        render={({field}) => <Select isMulti options={SKILLS} {...field } />}
+                    />
 				</Form.Group>
 
 				<Button variant="info" type="submit">
